@@ -1,0 +1,8 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+migrations/
+*.png
+*.jpg
+venv/
+*.py[cod]
+*$py.class

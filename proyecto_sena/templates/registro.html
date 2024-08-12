@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-0sIQOjKpnd9MLV0+kAqHzLSkdOrhX72I/V5cHTpkkmwZ44dRv1+1kGtPFiAOMfW/EtWg9mgjN43kloXeE8UgIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Registrarse</title>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .card {
+      max-width: 400px;
+      margin: 0 auto;
+      margin-top: 50px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+      margin-top: 20px;
+      color: #333333;
+      text-align: center;
+    }
+
+    .card-body {
+      padding: 30px;
+    }
+
+    .form-label {
+      color: #333333;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0069d9;
+      border-color: #0062cc;
+    }
+
+    .btn-primary:focus,
+    .btn-primary.focus {
+      box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+    }
+
+    .btn-primary:not(:disabled):not(.disabled):active,
+    .btn-primary:not(:disabled):not(.disabled).active,
+    .show>.btn-primary.dropdown-toggle {
+      background-color: #0062cc;
+      border-color: #005cbf;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">Registro</h1>
+            {% block content %}
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus"></i> Registrarse</button>
+                </div>
+                <div class="text-center">
+                  <button class="btn btn-primary"> <a href="{% url 'signin/' %}">¿Deseas volver al Login? 🤔</a> </button> 
+              </div>
+            </form>
+            
+            {% endblock %}
+           
+        </div>
+    </div>
+</div>
+
+
+
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

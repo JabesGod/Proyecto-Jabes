@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!--  para poner el hpta icono de navegacion -->
+  <link rel="shortcut icon" href="https://i.imgur.com/J2b4gG5.png.ico" type="image/x-icon">
+  <!-- Option 1: Include in HTML -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'home.css' %}">
+
+</head>
+
+<body>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2">
+        <a class="" href="/">
+          <img src="https://i.imgur.com/J2b4gG5.png" width="70" height="70" alt="Botón de camisa">
+        </a>
+      </div>
+  
+      <div class="col-sm-10 d-flex align-items-center">
+        <button class="btn btn-success btn mt-3 me-3" type="button" data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+          </svg>
+        </button>
+  
+        <div class="col-sm-10">
+          <div class="row">
+            <div class="col-lg-6 col-md-6"> 
+              <form method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                  <input class="form-control" name="buscar" type="search" placeholder="Haga su búsqueda"
+                    aria-label="Search">
+                  <div class="input-group-append">
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="col-lg-6 col-md-6 d-flex justify-content-end align-items-center">
+              <form class="d-flex" method="post">
+                {% csrf_token %}
+                <div class="btn-group">
+                  {% if request.user.is_authenticated %}
+                  <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                    data-bs-display="static" aria-expanded="false">
+                    <i class="fa fa-user"></i> {{ user }}
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                    <button type="button" class="btn-close justify-content-end" data-bs-dismiss="offcanvas"
+                      aria-label="Close"></button>
+                    <li><a class="dropdown-item" href="{% url 'signout' %}">Cerrar Sesión</a></li>
+                    <li><a class="dropdown-item" href="#">Pedidos</a></li>
+                    <li><a class="dropdown-item" href="#">Favoritos</a></li>
+                    {% if user.is_staff %}
+                    <li><a class="dropdown-item" href="{% url 'administrador' %}">Admin</a></li>
+                    {% endif %}
+                    <li><a class="dropdown-item" href="{% url 'cambiarcontrasena' %}">Cambiar Contraseña</a></li>
+                  </ul>
+                  {% else %}
+                  <a href="/signin" class="btn btn-primary text-decoration-none me-2"><span
+                      class="glyphicon glyphicon-log-in"></span> Login</a>
+                  <a href="/singup" class="btn btn-success text-decoration-none">Signup</a>
+                  {% endif %}
+                </div>
+              </form>
+              <div class="col-1">
+                <a class="carcom" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                  aria-controls="offcanvasRight"><img class="mt-4 me-5" width="35"
+                    src="https://cdn-icons-png.flaticon.com/512/107/107831.png"></a>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
+                  aria-labelledby="offcanvasRightLabel">
+                  <div class="offcanvas-header bor1">
+                    <h5 class="offcanvas-title letc"><img class="me-2 mb-2"
+                        src="https://cdn-icons-png.flaticon.com/512/107/107831.png" width="35">CARRITO</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                  </div>
+                  <div class="offcanvas-body">
+                    <div class="row">
+                      {% for item in carrito %}
+                      <div class="row produc">
+                        <div class="col-4">
+                          <img src="{producto.imagen.url}" style="width: 98%;"
+                            class="mt-1 mb-1">
+                        </div>
+                        <div class="col-8">
+                          <p class="prodet"><strong>Nombre: </strong>{{ item.producto.nombreProducto }}</p>
+                          <p class="prodet"><strong>Detalles: </strong>{{ item.producto.descripcion }}</p>
+                          <p class="prodet"><strong>Precio: </strong>{{ item.producto.precio }} <a class="clsx"
+                              id="producto-{{ item.id }}" href="#" onclick="eliminarProducto({item.id});"
+                              style="text-decoration: none; color: black;">X</a></p>
+                          <p class="prodet" id="cantCarrito-{{ item.id }}"><strong>Cantidad: </strong>{{
+                            item.cantidad_carrito }}</p>
+                        </div>
+                      </div>
+                      {% empty %}
+                      <p>El carrito está vacío.</p>
+                      {% endfor %}
+                    </div>
+                    <p>Total: {{ total }}</p>
+                    <p class="bort">Instrucciones para el vendedor</p>
+                    <input type="note" style="width: 100%; height: 10%; border: 2px solid black;"><br>
+                    <button class="bc mt-1 btn">Ver Carrito</button><br>
+                    <button class="bc btn">Pagar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="justify-content-start col-sm-1">
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+      aria-labelledby="offcanvasWithBothOptionsLabel">
+      
+      <div class="offcanvas-header">
+        <div class="icono"></div>
+      </div>
+      <div class="offcanvas-body">
+        <a class="text-decoration-none mt-1text-center" style="color: black;"
+          onmouseover="this.style.position = 'relative'; this.style.left = '-5px'; this.style.top = '-5px';"
+          onmouseout="this.style.position = ''; this.style.left = ''; this.style.top = '';">
+          <img src="https://i.imgur.com/f927Tiw.png" width="30" height="30" alt="">
+          <span class="fs-4 d-flex align-items-center">
+            Droguería
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </span>
+          
+        </a>
+        <p class="fw-bold"></p>
+
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header mt-3">
+              <button class="accordion-button collapsed mt-5" type="button" data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                <img src="https://i.imgur.com/3LbsAnQ.png" width="30" height="30" alt="">
+                <b class="ms-3">Productos</b>
+              </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">
+                <div class="list-group list-group-flush">
+
+                  <div class="nav-item py-2 py-sm-0 text-white rounded" style="transition: all 0.3s ease;"
+                    onmouseover="this.style.backgroundColor='white'; this.style.color='black'; this.style.transform='scale(1.05)'; this.style.border='1px solid white';"
+                    onmouseout="this.style.backgroundColor=''; this.style.color='white'; this.style.transform='scale(1)'; this.style.border='none';">
+
+                    <a href="{% url 'productos_medicamento_liquido' %}" class="list-group-item list-group-item-action">
+                      <img src="https://i.imgur.com/pIEnn7o.png" width="20" height="20" alt="">
+                      <span class="ms-3">Medicamentos/Líquidos</span>
+                    </a>
+
+                  </div>
+
+                  <div class="nav-item py-2 py-sm-0 text-white rounded" style="transition: all 0.3s ease;"
+                    onmouseover="this.style.backgroundColor='white'; this.style.color='black'; this.style.transform='scale(1.05)'; this.style.border='1px solid white';"
+                    onmouseout="this.style.backgroundColor=''; this.style.color='white'; this.style.transform='scale(1)'; this.style.border='none';">
+
+                    <a href="{% url 'productos_medicamento_capsulas' %}" class="list-group-item list-group-item-action">
+                      <i class="fas fa-pills ml-auto"></i><span class="ms-3">Medicamentos/Capsula</span></a>
+                  </div>
+
+                  <div class="nav-item py-2 py-sm-0 text-white rounded" style="transition: all 0.3s ease;"
+                    onmouseover="this.style.backgroundColor='white'; this.style.color='black'; this.style.transform='scale(1.05)'; this.style.border='1px solid white';"
+                    onmouseout="this.style.backgroundColor=''; this.style.color='white'; this.style.transform='scale(1)'; this.style.border='none';">
+
+                    <a href="{% url 'productos_cuidado_per' %}" class="list-group-item list-group-item-action">
+                      <img src="https://i.imgur.com/PJhx3vz.png" width="30" height="20" alt=""> <span
+                        class="ms-3">Cuidado personal</span></a>
+                  </div>
+                  <div class="nav-item py-2 py-sm-0 text-white rounded" style="transition: all 0.3s ease;"
+                    onmouseover="this.style.backgroundColor='white'; this.style.color='black'; this.style.transform='scale(1.05)'; this.style.border='1px solid white';"
+                    onmouseout="this.style.backgroundColor=''; this.style.color='white'; this.style.transform='scale(1)'; this.style.border='none';">
+
+                    <a href="{% url 'productos_maternidad' %}" class="list-group-item list-group-item-action">
+                      <img src="https://i.imgur.com/DhvLo57.png" width="30" height="20" alt=""> <span
+                        class="ms-3">Maternidad</span></a>
+                  </div>
+                  <div class="nav-item py-2 py-sm-0 text-white rounded" style="transition: all 0.3s ease;"
+                    onmouseover="this.style.backgroundColor='white'; this.style.color='black'; this.style.transform='scale(1.05)'; this.style.border='1px solid white';"
+                    onmouseout="this.style.backgroundColor=''; this.style.color='white'; this.style.transform='scale(1)'; this.style.border='none';">
+
+                    <a href="{% url 'productos_belleza' %}" class="list-group-item list-group-item-action">
+                      <img src="https://i.imgur.com/eLp9Y3I.png" width="30" height="20" alt=""> <span
+                        class="ms-3">Belleza</span></a>
+                  </div>
+                  <div class="nav-item py-2 py-sm-0 text-white rounded" style="transition: all 0.3s ease;"
+                    onmouseover="this.style.backgroundColor='white'; this.style.color='black'; this.style.transform='scale(1.05)'; this.style.border='1px solid white';"
+                    onmouseout="this.style.backgroundColor=''; this.style.color='white'; this.style.transform='scale(1)'; this.style.border='none';">
+
+                    <a href="{% url 'otros' %}" class=" list-group-item list-group-item-action">
+                      <img src="https://i.imgur.com/uhlZBG3.png" width="30" height="20" alt=""> <span
+                        class="ms-3">Otros</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree"><i
+                  class="fas fa-question-circle"></i>
+                <b class="ms-3"> <a href="pqrs_form.html"></a> Acerca de nosotros</b>
+              </button>
+            </h2>
+            <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">
+                <div class="list-group list-group-flush">
+                  <div class="nav-item py-2 py-sm-0 text-white rounded" style="transition: all 0.3s ease;"
+                    onmouseover="this.style.backgroundColor='white'; this.style.color='black'; this.style.transform='scale(1.05)'; this.style.border='1px solid white';"
+                    onmouseout="this.style.backgroundColor=''; this.style.color='white'; this.style.transform='scale(1)'; this.style.border='none';">
+                    <a href="{% url 'desarrollador'%}" class="list-group-item list-group-item-action">¿Quiénes
+                      somos los desarrolladores?</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-success">
+    <div class="container">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link me-3" href="{% url 'productos_medicamento_liquido' %}">
+              <img src="https://i.imgur.com/pIEnn7o.png" width="30" height="30" alt=""
+                style="border-radius: 50%; border: 2px solid black;">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link me-3" href="{% url 'productos_medicamento_capsulas' %}">
+              <img src="https://i.imgur.com/vdvdHeh.png" width="30" height="30" alt=""
+                style="border-radius: 50%; border: 2px solid black;">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link me-3" href="{% url 'productos_cuidado_per' %}">
+              <img src="https://i.imgur.com/PJhx3vz.png" width="30" height="30" alt=""
+                style="border-radius: 50%; border: 2px solid black;">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link me-3" href="{% url 'productos_maternidad' %}">
+              <img src="https://i.imgur.com/DhvLo57.png" width="30" height="30" alt=""
+                style="border-radius: 50%; border: 2px solid black;">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link me-3" href="{% url 'productos_belleza' %}">
+              <img src="https://i.imgur.com/eLp9Y3I.png" width="30" height="30" alt=""
+                style="border-radius: 50%; border: 2px solid black;">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link me-3" href="{% url 'otros' %}">
+              <img src="https://i.imgur.com/uhlZBG3.png" width="30" height="30" alt=""
+                style="border-radius: 50%; border: 2px solid black;">
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  
+  
+  {% block messi %}
+  <div class="shell">
+    <div class="container">
+      <div class="row">
+        {% for producto in page_obj %}
+        <div class="col-md-4 col col-lg-2 ">
+          <div class="wsk-cp-product border border-success">
+            <div class="wsk-cp-img">
+              <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+            </div>
+            <div class="wsk-cp-text">
+              <div class="title-product" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                {{ producto.nombre }}
+              </div>
+  
+              <div class="category" style="size: 5.rem;">
+                <span>{{ producto.categoria }}</span>
+              </div>
+              <div class="description-prod">
+                <p>Descripción: {{ producto.descripcion }}</p>
+              </div>
+              <div class="card-footer">
+                <div class="wcf-left text-center"><span class="price">Precio: {{ producto.precio }}</span>
+                  <br>
+                  <span class="quantity">Cantidad: {{ producto.cantidad }}</span>
+                </div>
+                <div class="wcf-right">
+                  <form method="POST">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-outline-primary buy-btn">Agregar<i class="fa fa-cart-plus"></i>
+                    </button>
+                  </form>
+                  <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-outline-primary">Detalles</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="col-md-12 ">
+          <h2 class="text-center">No se encontraron resultados <img src="https://i.imgur.com/J9LXSpe.png" width="50"
+              height="50" alt=""></h2>
+        </div>
+        {% endfor %}
+      </div>
+  
+      {% if page_obj.has_other_pages %}
+      <div class="pagination ">
+        {% if page_obj.has_previous %}
+        <a href="?page=1" class="col col-md-6 col-lg-1 btn btn-outline-warning">&laquo; Primera</a>
+        <a href="?page={{ page_obj.previous_page_number }}"
+          class="col col-md-6 col-lg-1 btn btn-outline-warning">Anterior</a>
+        {% endif %}
+  
+        <span class="current-page">{{ page_obj.number }}</span>
+  
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-warning">Siguiente</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-warning">Última &raquo;</a>
+        {% endif %}
+  
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endblock %}
+  
+  <!-- el fucking footerrrrrrrr-->
+  <footer class="text-center text-lg-start text-muted ">
+
+    <div class="container text-center text-md-start mt-5">
+      <!-- Grid row -->
+      <div class="row mt-3">
+        <!-- Grid column -->
+        <div class="col-12 col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+          <!-- Content -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            <i class="bi bi-plus-circle me-3"></i>Droguería Darcy
+          </h6>
+          <p>
+            En esta Droguería podra encontrar todos sus productos a los mejores precios.
+          </p>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+
+
+        <!-- Grid column -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">Contactenos</h6>
+          <p><i class="bi bi-house me-3"></i> Barranquilla, Col</p>
+          <p>
+            <i class="bi bi-envelope me-3"></i>
+            jabesrko011@gmail.com
+          </p>
+          <p><i class="bi bi-phone me-3"></i> 300-879-87-49 </p>
+          <p><i class="bi bi-phone me-3"></i> 300-879-87-49</p>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="text-center p-4">
+      © 2023 Copyright:
+      <div>
+        <a href="" class="me-4 text-reset">
+          <i class="bi bi-facebook-f"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="bi bi-twitter"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="bi bi-google"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="bi bi-instagram"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="bi bi-linkedin"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="bi bi-github"></i>
+        </a>
+      </div>
+    </div>
+
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script>
+
+
+  <script>
+    function eliminarProducto(id) {
+      const productoEliminado = document.getElementById('producto-' + id);
+      const cantCarrito = document.getElementById('cantCarrito-' + id)
+      var contenido = cantCarrito.innerText;
+      var numero = contenido.trim().split(":")[1].trim();
+      if (productoEliminado) {
+        // Enviar solicitud AJAX al endpoint de eliminar producto
+        fetch('/carrito/eliminar/' + id)
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error(response.statusText);
+            }
+          })
+          .then(data => {
+            // Manejar la respuesta y actualizar la interfaz de usuario si es necesario
+            // Por ejemplo, eliminar el producto de la lista sin recargar la página
+            // productoEliminado.remove();
+            cantCarrito.innerHTML = "<strong>Cantidad: </strong> " + (parseInt(numero) - 1);
+            if (numero === '1') {
+              window.location.reload()
+            }
+          })
+          .catch(error => {
+            alert('Error: ' + error.message);
+          });
+      }
+    }
+  </script>
+</body>
+</html>

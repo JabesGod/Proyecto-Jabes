@@ -1,0 +1,67 @@
+{% extends 'home.html' %}
+
+{% block content %}
+<div class="shell">
+  <div class="container">
+    <div class="row">
+      {% for producto in productos %}
+      <div class="col-md-4 col col-lg-2">
+        <div class="wsk-cp-product">
+          <div class="wsk-cp-img">
+            <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+          </div>
+          <div class="wsk-cp-text">
+            <div class="title-product">
+              <h3>{{ producto.nombre }}</h3>
+            </div>
+
+            <div class="category" style="size: 5.rem;">
+              <span>{{ producto.categoria }}</span>
+            </div>
+            <div class="description-prod">
+              <p>Descripción: {{ producto.descripcion }}</p>
+            </div>
+            <div class="card-footer">
+              <div class="wcf-left text-center"><span class="price">Precio:{{ producto.precio }}</span></div>
+              <div class="wcf-right">
+                <form method="POST">
+                  {% csrf_token %}
+                  <button type="button" class="btn btn-outline-primary buy-btn">Agregar<i
+                      class="fa fa-cart-plus"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-md-12 ">
+        <h2 class="text-center">No se encontraron resultados <img src="https://i.imgur.com/J9LXSpe.png" width="50" height="50" alt=""></h2>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if page_obj.has_other_pages %}
+    <div class="pagination ">
+      {% if page_obj.has_previous %}
+      <a href="?page=1" class=" col col-md-6 col-lg-1 btn btn-outline-warning">&laquo; Primera</a>
+      <a href="?page={{ page_obj.previous_page_number }}"
+        class="col col-md-6 col-lg-1 btn btn-outline-warning">Anterior</a>
+    {% endif %}
+    {% if page_obj.has_previous %}
+    <a href="?page=1" class="col col-md-6 col-lg-1 btn btn-outline-warning">&laquo; Primera</a>
+    <a href="?page={{ page_obj.previous_page_number }}" class="col col-md-6 col-lg-1 btn btn-outline-warning">Anterior</a>
+    {% endif %}
+
+    <span class="current-page">{{ page_obj.number }}</span>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-warning">Siguiente</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-warning">Última &raquo;</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+</div>
+{% endblock %}

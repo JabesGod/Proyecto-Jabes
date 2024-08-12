@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="shortcut icon" href="https://i.imgur.com/J2b4gG5.png.ico" type="image/x-icon">
+  <!-- Option 1: Include in HTML -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.1/js/bootstrap.min.js"
+    integrity="sha512-eLRvFXtW0f8/KC78tESrz2tIvR0W+2T9rXZc0zoZKjgA3q+8s/dsTfMw0mY1v8nWJZtF9ytb/Cz/Nt7vJ8Wn+Q=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+    <title>Admin</title>
+
+    <!-- Open Sans Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+  </head>
+  <body>
+    <div class="grid-container">
+
+      <!-- Header -->
+      <header class="header">
+        <div class="menu-icon" onclick="openSidebar()">
+          <span class="material-icons-outlined">menu</span>
+        </div>
+      </header>
+      <!-- End Header -->
+
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        <div class="sidebar-title">
+            <div class="sidebar-brand">
+              <a href="{% url 'home' %}">
+                <img src="https://i.imgur.com/J2b4gG5.png" width="70" height="70" alt="">
+              </a>
+            </div>
+            <a href="{% url 'home' %}" class="sidebar-home-link">
+              <i class="fa fa-chevron-left"></i>
+            </a>
+          </div>
+          
+
+        <ul class="sidebar-list">
+          <li class="sidebar-list-item">
+            <a href="#" data-url="">
+              <i class="bi bi-bag"></i> Pedidos
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="{% url 'proveedores'%}">
+              <span class="fa fa-truck"></span> Proveedores
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="#">
+              <span class="fa fa-capsules"></span> Productos
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="#">
+              <span class="fa fa-user-plus"></span> Usuarios
+            </a>
+          </li>
+      </aside>
+      <!-- End Sidebar -->
+
+      <!-- Main -->
+      <main class="main-container">
+        <div class="main-title">
+          <h2>Admin/Darcy</h2>
+        </div>
+
+        <div class="main-cards">
+
+            <div class="card">
+                <div class="card-inner">
+                  <p class="fa fa-user"> &nbsp; USUARIOS</p>
+                  <div>
+                  <p>{{ total_usuarios.users }}</p>
+                  <ul>
+                    {% for user in users %}
+                    <li>{{ user.username }}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                </div>
+              </div>
+              
+              
+
+          <div class="card">
+            <div class="card-inner">
+              <p class="fa fa-capsules">&nbsp; PRODUCTOS</p>
+            
+            </div>
+      
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+              <p class="fa fa-truck"> &nbsp; PROVEEDORES</p>
+
+            </div>
+        
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+                <p class="fa fa-bag bi-bag"> &nbsp;PEDIDOS</p>
+        
+            </div>
+      
+          </div>
+
+        </div>
+      </main>
+ 
+
+    </div>
+    <script>
+      $(document).ready(function() {
+        $('.sidebar-list-item a').on('click', function(e) {
+          e.preventDefault();
+          const url = $(this).data('url');
+          loadContent(url);
+        });
+      });
+    
+      function loadContent(url) {
+        $.ajax({
+          url: url,
+          type: 'GET',
+          success: function(data) {
+            $('#content-container').html(data);
+          },
+          error: function() {
+            alert('Error al cargar el contenido');
+          }
+        });
+      }
+    </script>
+    
+    <script>
+        
+    var sidebarOpen = false;
+    var sidebar = document.getElementById("sidebar");
+    
+    function openSidebar() {
+      if(!sidebarOpen) {
+        sidebar.classList.add("sidebar-responsive");
+        sidebarOpen = true;
+      }
+    }
+    
+    function closeSidebar() {
+      if(sidebarOpen) {
+        sidebar.classList.remove("sidebar-responsive");
+        sidebarOpen = false;
+      }
+    }
+    
+    </script>
+  </body>
+</html>

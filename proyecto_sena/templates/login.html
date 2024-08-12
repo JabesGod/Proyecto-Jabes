@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="https://i.imgur.com/J2b4gG5.png.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <title>Iniciar sesión</title>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .card {
+      max-width: 400px;
+      margin: 0 auto;
+      margin-top: 50px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+      margin-top: 20px;
+      color: #333333;
+      text-align: center;
+    }
+
+    .card-body {
+      padding: 30px;
+    }
+
+    .form-label {
+      color: #333333;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0069d9;
+      border-color: #0062cc;
+    }
+
+    .btn-primary:focus,
+    .btn-primary.focus {
+      box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+    }
+
+    .btn-primary:not(:disabled):not(.disabled):active,
+    .btn-primary:not(:disabled):not(.disabled).active,
+    .show>.btn-primary.dropdown-toggle {
+      background-color: #0062cc;
+      border-color: #005cbf;
+    }
+    body{
+      background: linear-gradient(to right, #007bff 50%, #ff9800 50%);
+      height: 100vh;
+  }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">Iniciar sesión</h1>
+            <form method="post">
+                {% csrf_token %}
+                {% if messages %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                <div class="mb-3">
+                    <label for="username" class="form-label">Nombre de usuario</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Ingrese su nombre de usuario">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese su contraseña">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Iniciar sesión</button>
+                </div>
+            </form>
+            <div class="text-center">
+                <a href="/password_reset" class="text-decoration-none">¿Olvidaste tu contraseña?💀</a>
+            </div>
+            <div class="text-center">
+                <a href="{% url 'singup' %}" class="text-decoration-none">¿Deseas crear una cuenta?</a>
+            </div>
+            <div class="text-center mt-3">
+                <a href="{% url 'home' %}" class="text-decoration-none" onclick="history.back();" ><i class="fas fa-arrow-left" ></i> Volver</a>
+            </div>
+            
+        </div>
+    </div>
+</div>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CRUD</title>
+    <!-- Agrega los enlaces a Bootstrap CSS y JS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xVZ3q1ldTJWjXeI6ONjDf67eE9FYRo2i0vkNUiQbZ/z1KzHbORZC1ycnU8MzGG6a+HbZ2sz1zprEacxU5i1gug==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-1 col-md-10">
+                <div class="panel">     
+                    <div class="panel-heading">
+                        <div class="row"> 
+                            <div class="col-sm-12 col-xs-12">
+                                
+                                <div class="panel-body table-responsive">
+                                    {% if productos %}
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Id</th>
+                                                    <th>Nombre</th>
+                                                    <th>Precio</th>
+                                                    <th>Descripción</th>
+                                                    <th>Categoría</th>
+                                                    <th>Cantidad</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for producto in productos %}
+                                                    <tr>
+                                                        <td>{{ producto.id }}</td>
+                                                        <td>{{ producto.nombre }}</td>
+                                                        <td>{{ producto.precio }}</td>
+                                                        <td>{{ producto.descripcion }}</td>
+                                                        <td>{{ producto.categoria }}</td>
+                                                        <td>{{ producto.cantidad }}</td>
+                                                        <td>
+                                                            <a href="{% url 'update' producto.id %}" class="btn btn-sm btn-primary fa fa-pencil">Editar</a>
+                                                            <button type="button" class="btn btn-sm btn-danger fa fa-trash" data-toggle="modal" data-target="#deleteModal{{ producto.id }}">Eliminar</button>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-lg-6 offset-lg-3">
+                                                    <div class="card shadow">
+                                                        <div class="card-body">
+                                                            <h1 class="card-title text-center mb-4">Agregar Producto</h1>
+                                                            
+                                                            <button id="mostrarFormulario" class="btn btn-primary btn-block mb-3">Agregar Producto</button>
+                                                            
+                                                            <div id="formulario" style="display: none;">
+                                                                <form method="POST" action="{% url 'agregar_productos' %}" enctype="multipart/form-data">
+                                                                    {% csrf_token %}
+                                                                    {{ form.as_p }}
+                                                                    <div class="text-right mt-4">
+                                                                        <button type="submit" class="btn btn-primary">Agregar Producto</button>
+                                                                        <button id="cerrarFormulario" class="btn btn-secondary ml-2">Cerrar</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    {% else %}
+                                        <p>No hay productos disponibles.</p>
+                                        <form method="POST" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            {{ form.as_p }}
+                                            <button type="submit" class="btn btn-primary fa fa-plus-circle">Agregar Producto</button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% for producto in productos %}
+    <div class="modal fade" id="deleteModal{{ producto.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{ producto.id }}" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel{{ producto.id }}">Confirmar eliminación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de querer eliminar el producto "{{ producto.nombre }}"?
+                </div>
+                <div class="modal-footer">
+                    <form method="POST" action="{% url 'delete' producto.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger fa fa-trash">Eliminar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById("mostrarFormulario").addEventListener("click", function() {
+            document.getElementById("formulario").style.display = "block";
+        });
+        
+        document.getElementById("cerrarFormulario").addEventListener("click", function() {
+            document.getElementById("formulario").style.display = "none";
+        });
+    </script>
+</body>
+</html>

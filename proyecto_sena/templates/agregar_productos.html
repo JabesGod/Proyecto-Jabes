@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="shortcut icon" href="https://i.imgur.com/J2b4gG5.png.ico" type="image/x-icon">
+  <title>Agregar Producto</title>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .card {
+      max-width: 400px;
+      margin: 0 auto;
+      margin-top: 50px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+      margin-top: 20px;
+      color: #333333;
+      text-align: center;
+    }
+
+    .card-body {
+      padding: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      color: #333333;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0069d9;
+      border-color: #0062cc;
+    }
+
+    .btn-primary:focus,
+    .btn-primary.focus {
+      box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+    }
+
+    .btn-primary:not(:disabled):not(.disabled):active,
+    .btn-primary:not(:disabled):not(.disabled).active,
+    .show>.btn-primary.dropdown-toggle {
+      background-color: #0062cc;
+      border-color: #005cbf;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div id="anuncio" class="card" style="display: none;">
+                <div class="card-body">
+                    <h1 class="card-title">Agregar Producto</h1>
+                    
+                    {% if messages %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            {% for message in messages %}
+                            <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <form id="formulario" method="POST" action="{% url 'agregar_productos' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_nombre" class="form-label">Nombre:</label>
+                            {{ form.nombre }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_precio" class="form-label">Precio:</label>
+                            {{ form.precio }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_descripcion" class="form-label">Descripción:</label>
+                            {{ form.descripcion }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_categoria" class="form-label">Categoría:</label>
+                            {{ form.categoria }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_imagen" class="form-label">Imagen:</label>
+                            {{ form.imagen }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_cantidad" class="form-label">Cantidad:</label>
+                            {{ form.cantidad }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar Producto</button>
+                    </form>
+                    
+                    <button id="mostrarFormulario" class="btn btn-secondary">Añadir Producto</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.getElementById("mostrarFormulario").addEventListener("click", function() {
+        document.getElementById("anuncio").style.display = "block";
+    });
+</script>
+
+
+
+</body>
+

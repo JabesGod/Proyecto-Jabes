@@ -1,0 +1,94 @@
+{% extends "usuario/index.html" %}
+{% load static %}
+    {% block title %}
+    <title>{{producto.nombre}}</title>
+    {% endblock %}
+
+    {% block uwu %}
+	<main>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<section class="producto">
+						<div class="imagen-principal">
+							<img src="../../../media/{{ producto.foto }}" id="mi_imagen">
+							<div id="mi_modal" class="modal">
+								<div class="modal-content">
+									<span class="close">&times;</span>
+									<div class="carousel">
+										<div class="arrow arrow-right">&gt;</div>
+										<div class="image-container">
+										<img src="https://via.placeholder.com/500x500.png">
+										<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSOZnnQb-Lc2XPrN_KM1KLhdgN0bqzSUyySw&usqp=CAU" width="80%" alt="Producto 1">
+										<img src="https://cdn.milenio.com/uploads/media/2023/02/06/dinosaurios-profesionales-the-ia-dreams.jpg" width="80%" alt="Producto 2">
+										<img src="https://fotografias.larazon.es/clipping/cmsimages02/2023/04/18/B1F7E360-9E7B-4305-8140-C86A4AAD0D90/memes-celebran-victoria-real-madrid-video-franco-barcelona_70.jpg?crop=553,311,x0,y4&width=480&height=270&optimize=low&format=webply"  width="80%" alt="Producto 3">
+										<img src="https://www.isdi.education/uploads/media/21-9-medium/07/557-meme_marketing_0.png?v=1-0"  width="80%" alt="Producto 4">
+									</div>
+									<div class="arrow arrow-left">&lt;</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="galeria">
+							<div class="miniaturas">
+								<img src="https://via.placeholder.com/100x100.png" alt="Imp">
+								<img src="https://via.placeholder.com/100x100.png" alt="Imp">
+								<img src="https://via.placeholder.com/100x100.png" alt="Imp">
+								<img src="https://via.placeholder.com/100x100.png" alt="Imp">
+							</div>
+						</div>
+					</section>
+				</div>
+				<div class="col">
+					<div class="descripcion">
+						<h2>{{ producto.nombreProducto }}</h2>
+						<p>Descripción: {{ producto.descripcion }}</p>
+						<p>Precio: {{producto.precio}}</p>
+						<p>Otros detalles del producto.</p>
+						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi temporibus dignissimos corporis ratione 
+						qui saepe corrupti vel culpa dicta, similique repellat quaerat aliquam 
+						atque assumenda voluptas omnis quod alias incidunt
+					</div>
+						
+					<a href="{% url 'payuform' id=producto.id %}" class="comprar-btn">Comprar</a>
+					<a href="" class="carrito-btn">Añadir al carrito</a>
+				</div>
+			</div>
+		</div>
+		
+		<h2>Productos recomendados</h2>
+
+		<div class="recomendaciones">
+			<div class="recomendacion">
+		
+				<img src="https://via.placeholder.com/200x200.png" alt="Producto recomendado">
+				<h3>Gafas</h3>
+				<p>Precio: $12millones</p>
+		
+			</div>
+		  
+			<div class="recomendacion">
+		
+				<img src="https://via.placeholder.com/200x200.png" alt="Producto recomendado">
+				<h3>Jean</h3>
+				<p>Precio: $29millones</p>
+		
+			</div>
+
+						<div class="recomendacion">
+		
+				<img src="https://via.placeholder.com/200x200.png" alt="Producto recomendado">
+				<h3>Camisas</h3>
+				<p>Precio: $29millones</p>
+		
+			</div>
+		  
+			<div class="recomendacion">
+
+				<img src="https://via.placeholder.com/200x200.png" alt="Producto recomendado">
+				<h3>Camiseta</h3>
+				<p>Precio: $13millones</p>
+			</div>
+		  </div>
+	</main>
+	{% endblock %}
